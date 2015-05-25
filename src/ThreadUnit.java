@@ -26,19 +26,24 @@ public class ThreadUnit extends Thread {
 				if (task != null) {
 					task.doTask(1, 5);
 				}
-				// wait until get a new task
-				synchronized (this) {
-					this.wait();
-				}
 				// wake up thread helper after finish the task for moving him to
 				// the resting pool
+				freeToWork = true;
 				synchronized (th) {
+					//System.err.println("release TH!!!!!");
 					th.notify();
 				}
+				// wait until get a new task
+				synchronized (this) {
+					System.out.println("THREAD UNIT WAIT!");
+					this.wait();
+				}
+				
 			}
 		} catch (InterruptedException ex) {
 			ex.printStackTrace();
 		}
+		System.err.println("UNIT RELEASED");	
 	}
 
 	/* GETTERS AND SETTERS */

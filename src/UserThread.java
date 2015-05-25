@@ -1,5 +1,3 @@
-import java.util.Queue;
-import java.util.concurrent.ConcurrentLinkedQueue;
 
 
 public class UserThread {
@@ -8,8 +6,9 @@ public class UserThread {
 		final Result result2 = new Result();
 		final Result result3 = new Result();
 		Object lock = new Object();
-		ThreadManager tm = new ThreadManager(5, 10, result1, result2, result3, lock);
-		Queue<Task> tasks = new ConcurrentLinkedQueue<Task>();
+		Object lock2 = new Object();
+		ThreadManager tm = new ThreadManager(1, 10, result1, result2, result3, lock);
+		MyQueueGen<Task> tasks = new MyQueueGen<Task>();
 		for (int i = 0; i < 10; i++) {
 			tasks.add(new Task() {
 				@Override
@@ -22,7 +21,7 @@ public class UserThread {
 		feeder.start();
 		tm.start();
 		try {
-			Thread.sleep(100);
+			Thread.sleep(1000);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -1,14 +1,13 @@
-import java.util.Queue;
-import java.util.concurrent.ConcurrentLinkedQueue;
+
 
 public class Feeder extends Thread {
 	// queue of the tasks that sent from UserThread
-	private Queue<Task> tasks = new ConcurrentLinkedQueue<Task>();
+	private MyQueueGen<Task> tasks = new MyQueueGen<Task>();
 	private ThreadManager tm;
 	private Object lock;
 	private volatile boolean finish;
 
-	public Feeder(Queue<Task> tasks, ThreadManager tm, Object lock) {
+	public Feeder(MyQueueGen<Task> tasks, ThreadManager tm, Object lock) {
 		this.tm = tm;
 		this.finish = false;
 		this.tasks = tasks;
@@ -23,7 +22,7 @@ public class Feeder extends Thread {
 				// try to send task to the manager.
 				// if return true - keep to send.
 				// else wait until the manager tasks will be available
-				if (!tm.setTaskFromFeeder(tasks.poll())) {
+				if (!tm.setTaskFromFeeder(tasks.peek())) {
 					synchronized (lock) {
 						try {
 							lock.wait();
@@ -32,6 +31,9 @@ public class Feeder extends Thread {
 							e.printStackTrace();
 						}
 					}
+				} else {
+					//if success to send - remove the sent task
+					tasks.poll();
 				}
 			} else {
 				// finish himself after send all the tasks to the manager
@@ -39,6 +41,8 @@ public class Feeder extends Thread {
 				System.out.println("NO TASKS IN FEEDER!");
 			}
 		}
+
+		System.err.println("FEEDER RELEASED");
 	}
 
 	public boolean isFinish() {

@@ -1,19 +1,17 @@
-import java.util.Queue;
-import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  * 
- * @author Yair this class will help to move the threadsUnits from working queue
- *         to resting queue
+ * this class will help to move the threadsUnits from working queue to resting
+ * queue
  */
 public class ThreadHelper extends Thread {
 	private volatile boolean isFinish;
-	private Queue<ThreadUnit> workingThreads = new ConcurrentLinkedQueue<ThreadUnit>();
-	private Queue<ThreadUnit> restingThreads = new ConcurrentLinkedQueue<ThreadUnit>();
+	private MyQueueGen<ThreadUnit> workingThreads = new MyQueueGen<ThreadUnit>();
+	private MyQueueGen<ThreadUnit> restingThreads = new MyQueueGen<ThreadUnit>();
 	private ThreadManager tm;
 
-	public ThreadHelper(Queue<ThreadUnit> workingThreads,
-			Queue<ThreadUnit> restingThreads, ThreadManager tm) {
+	public ThreadHelper(MyQueueGen<ThreadUnit> workingThreads,
+			MyQueueGen<ThreadUnit> restingThreads, ThreadManager tm) {
 		this.workingThreads = workingThreads;
 		this.restingThreads = restingThreads;
 		this.tm = tm;
@@ -23,15 +21,16 @@ public class ThreadHelper extends Thread {
 	@Override
 	public void run() {
 		while (!isFinish) {
+			System.out.println(isFinish);
 			// check if the Thread unit is free to work
 			// if it is - move it to the resting queue
-			// TODO not working always
 			if (!workingThreads.isEmpty()
-					&& workingThreads.peek().getState() == Thread.State.WAITING) {
+					&& workingThreads.peek().isFreeToWork()) {
 				restingThreads.add(workingThreads.poll());
 				// after moving thread to the working pool - wake up the thread
 				// manager
 				synchronized (tm) {
+					System.out.println("RELEASE THREAD MANAGER!");
 					tm.notify();
 				}
 				System.out
@@ -39,14 +38,15 @@ public class ThreadHelper extends Thread {
 			} else {
 				synchronized (this) {
 					try {
+						System.out.println("THREAD HELPER WAIT!");
 						wait();
 					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 				}
 			}
 		}
+		System.err.println("Thread Helper dead!");
 	}
 
 	/* GETTERS AND SETTERS */
