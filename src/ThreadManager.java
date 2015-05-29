@@ -29,7 +29,7 @@ public class ThreadManager extends Thread {
 
 		// initialize all the threads
 		for (int i = 0; i < numberOfThreads; i++) {
-			restingThreads.add(new ThreadUnit(th));
+			restingThreads.add(new ThreadUnit());
 		}
 
 		// wake up all the threads to work
@@ -74,7 +74,6 @@ public class ThreadManager extends Thread {
 					}
 					// wake up the thread unit to do the task
 					synchronized (tu) {
-						System.out.println("Release Thread Unit");
 						tu.notify();
 					}
 				}
@@ -112,7 +111,6 @@ public class ThreadManager extends Thread {
 
 	public void setFinished(boolean isFinished) {
 		this.isFinished = isFinished;
-
 	}
 
 	/**
@@ -123,6 +121,7 @@ public class ThreadManager extends Thread {
 	 * @return
 	 */
 	public synchronized boolean setTaskFromFeeder(Task t) {
+		//System.out.println(t);
 		if (numberOfTasks > tasks.size()) {
 			tasks.add(t);
 			return true;

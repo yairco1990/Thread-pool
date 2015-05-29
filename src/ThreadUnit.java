@@ -5,12 +5,10 @@ public class ThreadUnit extends Thread {
 	private volatile Task task;
 	public static int id = 1;
 	public static int timeToSleep = 500;
-	private ThreadHelper th;
 
-	public ThreadUnit(ThreadHelper th) {
+	public ThreadUnit() {
 		freeToWork = true;
 		finish = false;
-		this.th = th;
 	}
 
 	@Override
@@ -24,15 +22,10 @@ public class ThreadUnit extends Thread {
 			while (!finish) {
 				// check if there is task to do
 				if (task != null) {
-					task.doTask(1, 5);
+					task.doTask(55, 22);
 				}
-				// wake up thread helper after finish the task for moving him to
-				// the resting pool
+				//change status
 				freeToWork = true;
-				synchronized (th) {
-					//System.err.println("release TH!!!!!");
-					th.notify();
-				}
 				// wait until get a new task
 				synchronized (this) {
 					System.out.println("THREAD UNIT WAIT!");
@@ -43,7 +36,7 @@ public class ThreadUnit extends Thread {
 		} catch (InterruptedException ex) {
 			ex.printStackTrace();
 		}
-		System.err.println("UNIT RELEASED");	
+		//System.err.println("UNIT RELEASED");	
 	}
 
 	/* GETTERS AND SETTERS */

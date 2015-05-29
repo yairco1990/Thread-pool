@@ -1,7 +1,7 @@
 
 public class MyQueueGen<T> {
 	private int front, tail, size;
-	private final int INIT_SIZE = 10;
+	private final int INIT_SIZE = 5000000;
 	private T[] data;
 
 	public MyQueueGen(){
