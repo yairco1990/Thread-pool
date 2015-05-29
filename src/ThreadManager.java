@@ -1,4 +1,3 @@
-
 public class ThreadManager extends Thread {
 	private int numberOfThreads;
 	private int numberOfTasks;
@@ -66,8 +65,8 @@ public class ThreadManager extends Thread {
 					// System.out.println("There are tasks available [" +
 					// tasks.peek() + "]");
 					ThreadUnit tu = restingThreads.poll();
-					workingThreads.add(tu);
 					tu.setFreeToWorkAndTask(false, tasks.poll());
+					workingThreads.add(tu);
 					// release feeder to get more tasks
 					synchronized (lock) {
 						lock.notify();
@@ -78,6 +77,7 @@ public class ThreadManager extends Thread {
 					}
 				}
 			}
+
 		}
 		synchronized (th) {
 			th.setFinish(true);
@@ -121,7 +121,6 @@ public class ThreadManager extends Thread {
 	 * @return
 	 */
 	public synchronized boolean setTaskFromFeeder(Task t) {
-		//System.out.println(t);
 		if (numberOfTasks > tasks.size()) {
 			tasks.add(t);
 			return true;

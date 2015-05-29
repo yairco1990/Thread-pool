@@ -1,5 +1,4 @@
 public class ThreadUnit extends Thread {
-	private volatile String calcType;
 	private volatile boolean finish;
 	private volatile boolean freeToWork;
 	private volatile Task task;
@@ -15,14 +14,14 @@ public class ThreadUnit extends Thread {
 	public void run() {
 		try {
 			// wait for the first task
-			synchronized (this) {
-				this.wait();
-			}
+//			synchronized (this) {
+//				this.wait();
+//			}
 			// thread will running as long as finish will be false
 			while (!finish) {
 				// check if there is task to do
 				if (task != null) {
-					task.doTask(55, 22);
+					task.doTask();
 				}
 				//change status
 				freeToWork = true;
@@ -31,22 +30,14 @@ public class ThreadUnit extends Thread {
 					System.out.println("THREAD UNIT WAIT!");
 					this.wait();
 				}
-				
 			}
 		} catch (InterruptedException ex) {
 			ex.printStackTrace();
 		}
-		//System.err.println("UNIT RELEASED");	
+		System.err.println("UNIT RELEASED");	
 	}
 
 	/* GETTERS AND SETTERS */
-	public String getCalcType() {
-		return calcType;
-	}
-
-	public void setCalcType(String calcType) {
-		this.calcType = calcType;
-	}
 
 	public boolean isFinish() {
 		return finish;
@@ -62,7 +53,6 @@ public class ThreadUnit extends Thread {
 
 	public void setFreeToWork(boolean isFreeToWork) {
 		this.freeToWork = freeToWork;
-
 	}
 
 	public void setFreeToWorkAndTask(boolean freeToWork, Task t) {

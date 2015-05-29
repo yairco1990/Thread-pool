@@ -12,7 +12,6 @@ public class Feeder extends Thread {
 		this.finish = false;
 		this.tasks = tasks;
 		this.lock = lock;
-		System.err.println(tasks.size());
 	}
 
 	@Override
@@ -42,7 +41,6 @@ public class Feeder extends Thread {
 				System.out.println("NO TASKS IN FEEDER!");
 			}
 		}
-
 		System.err.println("FEEDER RELEASED");
 	}
 

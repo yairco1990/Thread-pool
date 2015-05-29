@@ -34,12 +34,12 @@ public class ThreadHelper extends Thread {
 					System.out
 							.println("ThreadUnit finish to work, moved to restingThreads and wait for task");
 				} else {
-					
 					// look for other free thread
 					workingThreads.add(workingThreads.poll());
 				}
-			}else{
-				//if there are resting lets release thread manager to prevent dead lock
+			} else {
+				// if there are resting - release thread manager to prevent
+				// dead lock
 				synchronized (tm) {
 					tm.notify();
 				}
