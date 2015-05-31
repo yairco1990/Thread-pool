@@ -5,18 +5,13 @@ public class ThreadManager extends Thread {
 	private MyQueueGen<Task> tasks = new MyQueueGen<>();
 	private MyQueueGen<ThreadUnit> workingThreads = new MyQueueGen<ThreadUnit>();
 	private MyQueueGen<ThreadUnit> restingThreads = new MyQueueGen<ThreadUnit>();
-	private Result result1, result2, result3;
 	private ThreadHelper th;
 	private Object lock;
 	public static int id = 1;
 
-	public ThreadManager(int numberOfThreads, int numberOfTasks,
-			Result result1, Result result2, Result result3, Object lock) {
+	public ThreadManager(int numberOfThreads, int numberOfTasks, Object lock) {
 		this.numberOfThreads = numberOfThreads;
 		this.numberOfTasks = numberOfTasks;
-		this.result1 = result1;
-		this.result2 = result2;
-		this.result3 = result3;
 		this.isFinished = false;
 		this.lock = lock;
 	}
@@ -49,7 +44,7 @@ public class ThreadManager extends Thread {
 			if (restingThreads.isEmpty()) {
 				synchronized (this) {
 					try {
-						System.out.println("MANAGER WAIT!");
+//						System.out.println("MANAGER WAIT!");
 						wait();
 					} catch (InterruptedException e) {
 						// TODO Auto-generated catch block
@@ -101,7 +96,7 @@ public class ThreadManager extends Thread {
 				workingThreads.poll().notify();
 			}
 		}
-		System.out.println("MANAGER FINISHED");
+//		System.out.println("MANAGER FINISHED");
 	}
 
 	/* GETTERS AND SETTERS */

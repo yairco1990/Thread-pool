@@ -28,11 +28,11 @@ public class ThreadHelper extends Thread {
 						restingThreads.add(workingThreads.poll());
 						// after moving thread to the resting pool - wake up the
 						// thread manager
-						System.out.println("RELEASE THREAD MANAGER!");
+//						System.out.println("RELEASE THREAD MANAGER!");
 						tm.notify();
 					}
-					System.out
-							.println("ThreadUnit finish to work, moved to restingThreads and wait for task");
+//					System.out
+//							.println("ThreadUnit finish to work, moved to restingThreads and wait for task");
 				} else {
 					// look for other free thread
 					workingThreads.add(workingThreads.poll());
@@ -45,7 +45,7 @@ public class ThreadHelper extends Thread {
 				}
 			}
 		}
-		System.err.println("Thread Helper dead!");
+//		System.err.println("Thread Helper dead!");
 	}
 
 	/* GETTERS AND SETTERS */

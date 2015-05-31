@@ -27,14 +27,14 @@ public class ThreadUnit extends Thread {
 				freeToWork = true;
 				// wait until get a new task
 				synchronized (this) {
-					System.out.println("THREAD UNIT WAIT!");
+					//System.out.println("THREAD UNIT WAIT!");
 					this.wait();
 				}
 			}
 		} catch (InterruptedException ex) {
 			ex.printStackTrace();
 		}
-		System.err.println("UNIT RELEASED");	
+		//System.err.println("UNIT RELEASED");	
 	}
 
 	/* GETTERS AND SETTERS */

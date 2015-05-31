@@ -38,10 +38,10 @@ public class Feeder extends Thread {
 			} else {
 				// finish himself after send all the tasks to the manager
 				setFinish(true);
-				System.out.println("NO TASKS IN FEEDER!");
+//				System.out.println("NO TASKS IN FEEDER!");
 			}
 		}
-		System.err.println("FEEDER RELEASED");
+//		System.err.println("FEEDER RELEASED");
 	}
 
 	public boolean isFinish() {
